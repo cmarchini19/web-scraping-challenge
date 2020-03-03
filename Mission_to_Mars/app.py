@@ -15,15 +15,16 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    mars_data = mongo.db.mars_data.find_one
-    return render_template("index.html", mars_data=mars_data)
+    mars = mongo.db.mars.find_one()
+    return render_template("index.html", mars=mars)
 
 @app.route("/scrape")
 def scrape():
-    mars_data = scrape_mars.scrape()
-    mongo.db.mars_data.update({}, mars_data, upsert=True)
+    mars = mongo.db.mars
+    mars_data2 = scrape_mars.scrape()
+    mongo.db.mars.update({}, mars_data2, upsert=True)
     return redirect("/", code=302)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5001)
 

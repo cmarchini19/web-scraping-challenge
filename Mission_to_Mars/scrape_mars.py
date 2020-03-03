@@ -6,16 +6,18 @@ from splinter import Browser
 import time
 
 # Initiate chromedrive information
-def init_browser():
-    executable_path = {'executable_path': 'chromedriver.exe'}
-    return Browser('chrome', **executable_path, headless=False)
+# def init_browser():
+#     executable_path = {'executable_path': 'chromedriver.exe'}
+#     return Browser('chrome', **executable_path, headless=False)
 
 
 # Start scrape
 def scrape():
-    browser = init_browser
+    # browser = init_browser
 
     ###NASA MARS NEWS
+    # executable_path = {'executable_path': 'chromedriver.exe'}
+    browser = Browser('chrome', headless=False)
     news_url = 'https://mars.nasa.gov/news'
     browser.visit(news_url)
     html = browser.html
@@ -31,13 +33,19 @@ def scrape():
     news_para = news_title_paragraph.find('div', class_="article_teaser_body").text
 
     ###JPL MARS SPACE IMAGES - FEATURED IMAGE
-    browser = Browser('chrome', **executable_path, headless=False)
+    # executable_path = {'executable_path': 'chromedriver.exe'}
+    browser = Browser('chrome', headless=False)
 
     jpl_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+    # executable_path = {'executable_path': 'chromedriver.exe'}
+    browser = Browser('chrome')
     browser.visit(jpl_url)
+    time.sleep(5)
 
     browser.find_by_tag('footer').click()
+    time.sleep(2)
     browser.find_by_text('more info     ').click()
+    time.sleep(2)
 
     # Get/print featured image url information
     html = browser.html
@@ -52,6 +60,7 @@ def scrape():
     # Establish Twitter link
     mars = {}
     url = 'https://twitter.com/marswxreport?lang=en'
+    browser = Browser('chrome')
     browser.visit(url)
     time.sleep(5)
     html = browser.html
@@ -66,10 +75,10 @@ def scrape():
         for j in tweet.find("div",class_="css-901oao r-hkyrab r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0"):
                tweet_weather.append(j.parent.text)
             
-    tweet_weather[0]
+    # tweet_weather[0]
 
     ###MARS FACTS
-    browser = Browser('chrome', **executable_path, headless=False)
+    browser = Browser('chrome')
 
     #Establish URL
     mars_facts_url = 'https://space-facts.com/mars/'
@@ -93,8 +102,9 @@ def scrape():
     ###Mars Hemispheres
     #Cerberus Hemisphere URL Connection info
     cerberus_hemisphere = 'https://astrogeology.usgs.gov/search/map/Mars/Viking/cerberus_enhanced'
-    browser = Browser('chrome', **executable_path, headless=False)
+    browser = Browser('chrome')
     browser.visit(cerberus_hemisphere)
+    time.sleep(2)
 
     html = browser.html
     cerb_hemi_soup = bs(html, 'html.parser')
@@ -106,8 +116,9 @@ def scrape():
 
     #Schiaparelli Hemisphere URL Connection info
     schia_hemisphere = 'https://astrogeology.usgs.gov/search/map/Mars/Viking/schiaparelli_enhanced'
-    browser = Browser('chrome', **executable_path, headless=False)
+    browser = Browser('chrome')
     browser.visit(schia_hemisphere)
+    time.sleep(2)
 
     html = browser.html
     schia_hemi_soup = bs(html, 'html.parser')
@@ -119,8 +130,9 @@ def scrape():
 
     # Syrtis Major Hemisphere URL Connection info
     sm_hemisphere = 'https://astrogeology.usgs.gov/search/map/Mars/Viking/syrtis_major_enhanced'
-    browser = Browser('chrome', **executable_path, headless=False)
+    browser = Browser('chrome')
     browser.visit(sm_hemisphere)
+    time.sleep(2)
 
     html = browser.html
     sm_hemi_soup = bs(html, 'html.parser')
@@ -132,8 +144,9 @@ def scrape():
 
     #Valles Marineris Hemisphere URL Connection info
     vm_hemisphere = 'https://astrogeology.usgs.gov/search/map/Mars/Viking/valles_marineris_enhanced'
-    browser = Browser('chrome', **executable_path, headless=False)
+    browser = Browser('chrome')
     browser.visit(vm_hemisphere)
+    time.sleep(2)
 
     html = browser.html
     vm_hemi_soup = bs(html, 'html.parser')
@@ -155,12 +168,15 @@ def scrape():
 
     ###MARS DATA DICTIONARY
     mars = {}
-    mars ["Mars Article Title"]=news_title
-    mars ["Mars Article Paragraph"]=news_para
-    mars ["Mars JPL Featured Image"]=featured_image_url
-    mars ["Mars Twitter Weather"]=tweet_weather[0]
-    mars ["Mars Facts"]=final_facts_html_table
-    mars ["Mars Hemispheres"]=mars_hemi_imgs
+    mars ["Mars_Article_Title"]=news_title
+    mars ["Mars_Article_Paragraph"]=news_para
+    mars ["Mars_JPL_Featured_Image"]=featured_image_url
+    mars ["Mars_Twitter_Weather"]=tweet_weather[0]
+    mars ["Mars_Facts"]=final_facts_html_table
+    mars ["Mars_Hemispheres"]=mars_hemi_imgs
+
+    print(mars)
+    print("something")
 
     #Close the browser after scraping
     browser.quit()
